@@ -5,7 +5,7 @@ import { ActionCreators } from './store'
 import { bindActionCreators } from 'redux'
 
 const App = () => {
-    const posts = useSelector(state => state.posts)
+    const { loading, items, error } = useSelector(state => state.posts)
     const dispatch = useDispatch()
     const { fetchPosts } = bindActionCreators(ActionCreators, dispatch)
 
@@ -14,13 +14,17 @@ const App = () => {
         return () => {}
     }, [])
 
-    const renderPosts = posts.map((el, index) => <p key={index}>{el.title}</p>)
+    const renderPosts = () => {
+        if (loading) return <h1>Loading...</h1>
+        if (items) return items.map((el, index) => <p key={index}>{el.title}</p>);
+        if (error) return <h1>ERROR</h1>
+    }
 
     return (
-        <div>
-            {renderPosts}
-        </div>
-    )
+      <div>
+        {renderPosts()}
+      </div>
+    );
 }
 
 export default App
