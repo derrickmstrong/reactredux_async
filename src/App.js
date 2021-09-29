@@ -7,13 +7,15 @@ import { bindActionCreators } from 'redux'
 const App = () => {
     const posts = useSelector(state => state.posts)
     const dispatch = useDispatch()
-    const { fetchPosts } = bindActionCreators(ActionCreators)
+    const { fetchPosts } = bindActionCreators(ActionCreators, dispatch)
+
     useEffect(() => {
-        dispatch(ActionCreators.fetchPosts())
+        dispatch(fetchPosts)
         return () => {}
     }, [])
 
-    const renderPosts = posts.map(el => <p>{el.title}</p>)
+    const renderPosts = posts.map((el, index) => <p key={index}>{el.title}</p>)
+
     return (
         <div>
             {renderPosts}
